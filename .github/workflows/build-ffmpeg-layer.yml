@@ -1,0 +1,79 @@
+###############################################################################
+# GitHub Actions Workflow — Build FFmpeg Lambda Layer
+#
+# What this workflow does:
+# - Manually triggered (workflow_dispatch)
+# - Downloads a static Linux build of FFmpeg + FFprobe
+# - Packages them into a Lambda Layer (bin/ at root)
+# - Uploads the layer zip as a GitHub Actions artifact
+#
+# Notes:
+# - This version does NOT publish the layer to AWS (artifact only).
+# - See the "publish" variant if you want auto-publishing.
+###############################################################################
+
+name: Build FFmpeg Lambda Layer
+
+on:
+  workflow_dispatch:
+    inputs:
+      publish_to_aws:       # Declared but unused here (safe to leave in place)
+        description: "Also publish the layer to AWS?"
+        type: boolean
+        default: false
+      layer_name:
+        description: "Lambda layer name (if publishing)"
+        type: string
+        default: "ffmpeg-ffprobe"
+      aws_region:
+        description: "AWS region (if publishing)"
+        type: string
+        default: "eu-west-1"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write   # Required for OIDC if publishing (not used here)
+      contents: read
+
+    steps:
+      # ── Step 1: Checkout repo ──────────────────────────────────────────────
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # ── Step 2: Download static FFmpeg + FFprobe ──────────────────────────
+      - name: Fetch static FFmpeg + FFprobe
+        run: |
+          set -euo pipefail
+          URL="https://johnvansickle.com/ffmpeg/releases/ffmpeg-release-amd64-static.tar.xz"
+          # Resilient download with retries + timeouts
+          curl -fsSLo ffmpeg.tar.xz --retry 5 --retry-delay 5 --connect-timeout 30 --max-time 300 "$URL"
+          # Extract archive and detect folder name
+          tar -xJf ffmpeg.tar.xz
+          FOLDER="$(ls -1d ffmpeg-*-amd64-static | head -n 1)"
+          test -d "$FOLDER"
+          # Create layer/bin and copy binaries
+          mkdir -p layer/bin
+          cp "$FOLDER/ffmpeg" "$FOLDER/ffprobe" layer/bin/
+          chmod +x layer/bin/ffmpeg layer/bin/ffprobe
+
+      # ── Step 3: Smoke test binaries ───────────────────────────────────────
+      - name: Smoke test (versions)
+        run: |
+          ./layer/bin/ffmpeg -version | head -n 1
+          ./layer/bin/ffprobe -version | head -n 1
+
+      # ── Step 4: Zip Lambda layer ──────────────────────────────────────────
+      - name: Zip layer (root must contain bin/)
+        run: |
+          cd layer
+          zip -r9 ../ffmpeg-layer.zip .
+
+      # ── Step 5: Upload artifact ───────────────────────────────────────────
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ffmpeg-layer
+          path: ffmpeg-layer.zip
+          if-no-files-found: error

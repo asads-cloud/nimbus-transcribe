@@ -1,0 +1,70 @@
+﻿###############################################################################
+# .gitignore — Nimbus Transcribe
+#
+# Organized by category:
+# - OS / editor junk
+# - Python build/runtime files
+# - IDE/project configs
+# - Terraform state and local noise
+# - Docker + logs
+# - Artifacts (local build outputs)
+# - Secrets / tokens
+###############################################################################
+
+# ── OS / Editor junk ─────────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+
+# ── Python ───────────────────────────────────────────────────────────────────
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.venv/
+venv/
+.env
+.envrc
+
+# ── IDE / Editors ────────────────────────────────────────────────────────────
+.vscode/
+.code-workspace
+
+# ── Terraform ────────────────────────────────────────────────────────────────
+**/.terraform/
+**/.terraform.lock.hcl
+*.tfstate
+*.tfstate.*
+crash.log
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+.terraform.tfstate.lock.info
+
+# ── Docker + Logs ───────────────────────────────────────────────────────────
+*.log
+
+# ── Local artifacts / build outputs ──────────────────────────────────────────
+artifacts/**
+!artifacts/.gitkeep   # keep placeholder for empty dir
+
+# Terraform-specific state/artifacts (duplicate protection)
+.terraform/
+.terraform.lock.hcl
+terraform.tfstate
+terraform.tfstate.*
+crash.log
+
+# ── Local / Ephemeral files ──────────────────────────────────────────────────
+overrides-*.json
+*.tmp
+*.bak
+
+# ── Secrets / Tokens ─────────────────────────────────────────────────────────
+secrets.*
+hf_token.txt
+.env
+
+# ── Project-specific ─────────────────────────────────────────────────────────
+# Ignore ad-hoc artifacts, but keep required inputs
+artifacts/overrides-*.json

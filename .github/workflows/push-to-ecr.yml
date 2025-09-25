@@ -1,0 +1,88 @@
+###############################################################################
+# GitHub Actions — Build & Push Docker Image to Amazon ECR (via OIDC)
+#
+# What this does:
+# - Builds a Docker image from ./docker/openai-whisper-worker/Dockerfile
+# - Logs into ECR using GitHub OIDC + an assumable IAM role
+# - Tags the image as :latest and pushes to your ECR repository
+#
+# Requirements:
+# - IAM role with ECR push perms: arn:aws:iam::155186308102:role/GitHubActionsECRPusher
+# - ECR repo already exists: openai-whisper-faster
+# - Dockerfile at docker/openai-whisper-worker/Dockerfile
+###############################################################################
+
+name: Build & push Docker image to ECR (OIDC)
+
+on:
+  # ── Triggers ────────────────────────────────────────────────────────────────
+  push:
+    branches: [ main ]
+    paths:
+      - "docker/**"                        # Only rebuild when Docker context changes
+      - ".github/workflows/push-to-ecr.yml" # Or when this workflow changes
+
+permissions:
+  # ── Token permissions ───────────────────────────────────────────────────────
+  id-token: write        # Required for AWS OIDC auth
+  contents: read         # Required to checkout code
+
+env:
+  # ── Global env ──────────────────────────────────────────────────────────────
+  AWS_REGION: eu-west-1
+  ECR_REPO: openai-whisper-faster
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+
+    steps:
+      # ── Step 1: Checkout code ───────────────────────────────────────────────
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # ── Step 2: Configure AWS credentials via OIDC ─────────────────────────
+      - name: Configure AWS (OIDC)
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-region: ${{ env.AWS_REGION }}
+          role-to-assume: arn:aws:iam::155186308102:role/GitHubActionsECRPusher
+
+      # ── Step 3: Resolve account ID and full ECR URI ────────────────────────
+      - name: Resolve ECR URI
+        id: ecr
+        shell: bash
+        run: |
+          set -euo pipefail
+          ACCOUNT_ID=$(aws sts get-caller-identity --query Account --output text)
+          echo "ACCOUNT_ID=$ACCOUNT_ID" >> $GITHUB_ENV
+          echo "ECR_URI=${ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${ECR_REPO}" >> $GITHUB_ENV
+          echo "ECR registry: ${ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com"
+          echo "Full repo URI: ${ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${ECR_REPO}"
+
+      # ── Step 4: Authenticate Docker to ECR ─────────────────────────────────
+      - name: Login to ECR
+        run: |
+          aws ecr get-login-password --region "$AWS_REGION" \
+            | docker login --username AWS --password-stdin "${ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com"
+
+      # ── Step 5: Build the Docker image ─────────────────────────────────────
+      - name: Build image
+        run: |
+          docker build \
+            -t ${ECR_REPO}:dev \
+            -f docker/openai-whisper-worker/Dockerfile \
+            .
+
+      # ── Step 6: Tag & push the image (:latest) ─────────────────────────────
+      - name: Tag & push :latest
+        run: |
+          docker tag ${ECR_REPO}:dev "${ECR_URI}:latest"
+          docker push "${ECR_URI}:latest"
+
+      # ── Step 7: Optional visibility: show the pushed image digest ──────────
+      - name: Show pushed image
+        run: |
+          aws ecr describe-images --repository-name "$ECR_REPO" \
+            --query 'imageDetails[?contains(imageTags, `latest`)] | [0].imageDigest' \
+            --output text
