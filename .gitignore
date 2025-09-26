@@ -68,3 +68,12 @@ hf_token.txt
 # ── Project-specific ─────────────────────────────────────────────────────────
 # Ignore ad-hoc artifacts, but keep required inputs
 artifacts/overrides-*.json
+
+# ---- Phase 4 extras ----
+artifacts/*
+!artifacts/phase4.json
+
+# Terraform noise (keep the lock file)
+**/.terraform/*
+**/*.tfstate
+**/*.tfstate.*
