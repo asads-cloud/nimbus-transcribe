@@ -1,0 +1,8 @@
+2025-09-27T14:29:46.975Z  [run] starting whisper worker
+2025-09-27T14:29:47.468Z  [s3io] downloaded s3://nimbus-transcribe-ingest-155186308102-eu-west-1/chunks/task-0018/011.mp3 -> /work/in.audio
+2025-09-27T14:29:47.541Z  [run] transcribing... (--audio /work/in.audio --out /work/out.json --model large-v3 --beam_size 5 --compute_type int8_float16)
+2025-09-27T14:29:47.318Z  [info] device=cuda model=large-v3 compute_type=int8_float16
+2025-09-27T14:30:35.186Z  [done] wrote /work/out.json | duration=202.937875s | wall=47.35s | x4.29 realtime
+2025-09-27T14:30:35.460Z  [run] uploading -> s3://nimbus-transcribe-results-155186308102-eu-west-1/chunks/task-0018/11/out.json
+2025-09-27T14:30:35.814Z  [s3io] uploaded /work/out.json -> s3://nimbus-transcribe-results-155186308102-eu-west-1/chunks/task-0018/11/out.json
+2025-09-27T14:30:35.860Z  [run] done.

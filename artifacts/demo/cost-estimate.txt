@@ -1,0 +1,4 @@
+g5.xlarge × 8 × 5 min = ~$0.34
+S3 + Step Functions + Lambda = ~$0.20
+---------------------------------------
+Total ≈ $0.54 for 47 min transcription
