@@ -1,0 +1,45 @@
+﻿%% docs/architecture-diagram.mmd
+%% Nimbus Transcribe — Whisper + AWS Batch Transcription Architecture
+flowchart TB
+  U[User / Uploader] --> S3I[(S3 Ingest Bucket\nnimbus-transcribe-ingest-<acct>-<region>)]
+  click S3I "https://aws.amazon.com/s3/" _blank
+
+  S3I -. start run .-> SFN[Step Functions\nopenai-whisper-transcribe-map\nMaxConcurrency=8]
+  class SFN sfn;
+
+  SFN --> LPrepare[Lambda: Prepare\nchunk ~10 min + 1s overlap\nwrite manifest.jsonl]
+  class LPrepare lambda;
+
+  LPrepare --> |chunks + manifest| S3I
+
+  SFN --> |Distributed Map over manifest| BatchJobs[Batch GPU Jobs\nJob: openai-whisper-transcribe-job\nImage: whisper-faster:latest]
+  class BatchJobs batch;
+
+  BatchJobs --> |read chunks| S3I
+  BatchJobs --> |partials (JSON/segments)| S3R[(S3 Results Bucket\nnimbus-transcribe-results-<acct>-<region>)]
+  class S3I,S3R store;
+
+  SFN --> LStitch[Lambda: Stitcher\nmerge partials → transcript.{json,txt,srt,vtt}]
+  class LStitch lambda;
+  LStitch --> |final artifacts| S3R
+
+  %% (Observability)
+  SFN --> CW[(CloudWatch Logs)]
+  LPrepare --> CW
+  BatchJobs --> CW
+  LStitch --> CW
+  class CW cloudwatch;
+
+  %% Notes
+  note right of BatchJobs
+    Compute: g5.xlarge (A10G) × 8–16
+    Faster-Whisper / CTranslate2
+    compute_type=int8_float16
+  end
+
+  %% Styles
+  classDef store fill:#eef,stroke:#336,stroke-width:1px;
+  classDef lambda fill:#fff3cd,stroke:#aa6e00,stroke-width:1px;
+  classDef sfn fill:#e6ffed,stroke:#22863a,stroke-width:1px;
+  classDef batch fill:#ffeef0,stroke:#d73a49,stroke-width:1px;
+  classDef cloudwatch fill:#e8f0fe,stroke:#1967d2,stroke-width:1px;
