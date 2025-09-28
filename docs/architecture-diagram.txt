@@ -1,0 +1,224 @@
+<mxfile host="Electron" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/28.1.2 Chrome/138.0.7204.243 Electron/37.4.0 Safari/537.36" version="28.1.2">
+  <diagram name="Page-1" id="dCeagyCdCXqRGzVb9mfC">
+    <mxGraphModel dx="1335" dy="1897" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="DUNIo-uwOAKjHpK6f6tS-6" value="1) Upload audio" style="text;whiteSpace=wrap;html=1;align=left;verticalAlign=top;fontSize=12;" parent="1" vertex="1">
+          <mxGeometry x="180" y="260" width="90" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="DUNIo-uwOAKjHpK6f6tS-7" value="2a) S3:ObjectCreated" style="text;whiteSpace=wrap;html=1;align=left;verticalAlign=top;fontSize=12;" parent="1" vertex="1">
+          <mxGeometry x="430" y="197" width="120" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="DUNIo-uwOAKjHpK6f6tS-8" value="2b) Invoke" style="text;whiteSpace=wrap;html=1;align=left;verticalAlign=top;fontSize=12;" parent="1" vertex="1">
+          <mxGeometry x="684" y="193" width="80" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="DUNIo-uwOAKjHpK6f6tS-10" value="(optional trigger)" style="text;whiteSpace=wrap;html=1;align=left;verticalAlign=top;" parent="1" vertex="1">
+          <mxGeometry x="560" y="284" width="100" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="DUNIo-uwOAKjHpK6f6tS-11" value="(SSE-S3, Block Public Access)" style="text;whiteSpace=wrap;html=1;align=left;verticalAlign=top;" parent="1" vertex="1">
+          <mxGeometry x="280" y="340" width="230" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="DUNIo-uwOAKjHpK6f6tS-12" value="&lt;span style=&quot;font-family: Macan, &amp;quot;Helvetica Neue&amp;quot;, Helvetica, Arial, sans-serif; font-size: 16px; white-space-collapse: preserve; background-color: rgb(255, 255, 255);&quot;&gt;nimbus-transcribe-ingest-[acct]-eu-west-1&lt;/span&gt;" style="text;whiteSpace=wrap;html=1;align=left;verticalAlign=top;fontSize=14;fontColor=light-dark(#0a0000, #ededed);" parent="1" vertex="1">
+          <mxGeometry x="220" y="320" width="340" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="DUNIo-uwOAKjHpK6f6tS-13" style="endArrow=block;rounded=1;" parent="1" source="DUNIo-uwOAKjHpK6f6tS-17" target="DUNIo-uwOAKjHpK6f6tS-16" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="160" y="285.5" as="sourcePoint" />
+            <mxPoint x="320" y="290" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="DUNIo-uwOAKjHpK6f6tS-14" style="endArrow=block;rounded=1;dashed=1;exitX=1;exitY=0.25;exitDx=0;exitDy=0;exitPerimeter=0;" parent="1" source="DUNIo-uwOAKjHpK6f6tS-16" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="395" y="260" as="sourcePoint" />
+            <mxPoint x="570" y="220" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="420" y="220" />
+              <mxPoint x="430" y="220" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="DUNIo-uwOAKjHpK6f6tS-15" style="endArrow=block;rounded=1;dashed=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;exitPerimeter=0;" parent="1" source="7wUf3IL1HfSVNumFUlSG-5" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="630" y="220.8399999999997" as="sourcePoint" />
+            <mxPoint x="811" y="216.85799999999995" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="DUNIo-uwOAKjHpK6f6tS-16" value="" style="sketch=0;points=[[0,0,0],[0.25,0,0],[0.5,0,0],[0.75,0,0],[1,0,0],[0,1,0],[0.25,1,0],[0.5,1,0],[0.75,1,0],[1,1,0],[0,0.25,0],[0,0.5,0],[0,0.75,0],[1,0.25,0],[1,0.5,0],[1,0.75,0]];outlineConnect=0;fontColor=#232F3E;fillColor=#7AA116;strokeColor=#ffffff;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=12;fontStyle=0;aspect=fixed;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.s3;" parent="1" vertex="1">
+          <mxGeometry x="320" y="251" width="69" height="69" as="geometry" />
+        </mxCell>
+        <mxCell id="DUNIo-uwOAKjHpK6f6tS-17" value="User" style="html=1;verticalLabelPosition=bottom;align=center;labelBackgroundColor=#ffffff;verticalAlign=top;strokeWidth=2;strokeColor=#0080F0;shadow=0;dashed=0;shape=mxgraph.ios7.icons.user;fontSize=14;" parent="1" vertex="1">
+          <mxGeometry x="90" y="250" width="70" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="DUNIo-uwOAKjHpK6f6tS-32" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="DUNIo-uwOAKjHpK6f6tS-20" target="DUNIo-uwOAKjHpK6f6tS-31" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1119" y="200" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="DUNIo-uwOAKjHpK6f6tS-59" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.75;exitDx=0;exitDy=0;exitPerimeter=0;" parent="1" source="DUNIo-uwOAKjHpK6f6tS-20" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1170.0526315789475" y="433" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="DUNIo-uwOAKjHpK6f6tS-60" value="&lt;font style=&quot;font-size: 12px;&quot;&gt;11) Task: Stitch&lt;/font&gt;" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" parent="DUNIo-uwOAKjHpK6f6tS-59" vertex="1" connectable="0">
+          <mxGeometry x="0.6275" y="2" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="DUNIo-uwOAKjHpK6f6tS-20" value="&lt;font style=&quot;color: rgb(51, 0, 0);&quot;&gt;Step Functions&lt;/font&gt;" style="sketch=0;points=[[0,0,0],[0.25,0,0],[0.5,0,0],[0.75,0,0],[1,0,0],[0,1,0],[0.25,1,0],[0.5,1,0],[0.75,1,0],[1,1,0],[0,0.25,0],[0,0.5,0],[0,0.75,0],[1,0.25,0],[1,0.5,0],[1,0.75,0]];outlineConnect=0;fontColor=#232F3E;fillColor=#E7157B;strokeColor=#ffffff;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=14;fontStyle=0;aspect=fixed;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.step_functions;" parent="1" vertex="1">
+          <mxGeometry x="811" y="178" width="78" height="78" as="geometry" />
+        </mxCell>
+        <mxCell id="DUNIo-uwOAKjHpK6f6tS-21" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="1" vertex="1">
+          <mxGeometry x="790" y="70" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="DUNIo-uwOAKjHpK6f6tS-9" value="2c) Manual start&amp;nbsp;&lt;div&gt;(CLI/Console/API)&lt;/div&gt;" style="text;whiteSpace=wrap;html=1;align=left;verticalAlign=top;" parent="1" vertex="1">
+          <mxGeometry x="800" y="80" width="100" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="DUNIo-uwOAKjHpK6f6tS-22" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;entryPerimeter=0;" parent="1" source="DUNIo-uwOAKjHpK6f6tS-21" target="DUNIo-uwOAKjHpK6f6tS-20" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="DUNIo-uwOAKjHpK6f6tS-23" value="&lt;span style=&quot;color: rgb(0, 0, 0);&quot;&gt;&lt;font style=&quot;font-size: 14px;&quot;&gt;Openai-whisper-transcribe-map&amp;nbsp;&lt;/font&gt;&lt;/span&gt;&lt;div style=&quot;color: rgb(35, 47, 62); text-wrap-mode: nowrap;&quot;&gt;&lt;span style=&quot;color: rgb(0, 0, 0); text-wrap-mode: wrap;&quot;&gt;(Distributed Map, MaxConcurrency=50)&lt;/span&gt;&lt;/div&gt;" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
+          <mxGeometry x="715" y="280" width="270" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="DUNIo-uwOAKjHpK6f6tS-27" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;fontSize=12;entryX=0.145;entryY=0.145;entryDx=0;entryDy=0;entryPerimeter=0;exitX=0.35;exitY=1.101;exitDx=0;exitDy=0;exitPerimeter=0;" parent="1" source="DUNIo-uwOAKjHpK6f6tS-23" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="810" y="320" as="sourcePoint" />
+            <mxPoint x="828.7" y="471.135" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="809" y="471" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="DUNIo-uwOAKjHpK6f6tS-28" value="3) Task: Prepare" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=12;" parent="DUNIo-uwOAKjHpK6f6tS-27" vertex="1" connectable="0">
+          <mxGeometry x="-0.1557" relative="1" as="geometry">
+            <mxPoint y="6" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="DUNIo-uwOAKjHpK6f6tS-29" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.295;entryY=0.954;entryDx=0;entryDy=0;entryPerimeter=0;" parent="1" target="DUNIo-uwOAKjHpK6f6tS-11" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="820" y="493.51282051282055" as="sourcePoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="DUNIo-uwOAKjHpK6f6tS-30" value="4) Write manifest + chunks" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=12;" parent="DUNIo-uwOAKjHpK6f6tS-29" vertex="1" connectable="0">
+          <mxGeometry x="-0.0184" y="-1" relative="1" as="geometry">
+            <mxPoint x="-1" y="-8" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="DUNIo-uwOAKjHpK6f6tS-38" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="DUNIo-uwOAKjHpK6f6tS-31" target="DUNIo-uwOAKjHpK6f6tS-37" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="DUNIo-uwOAKjHpK6f6tS-31" value="Batch Job Queue" style="sketch=0;points=[[0,0,0],[0.25,0,0],[0.5,0,0],[0.75,0,0],[1,0,0],[0,1,0],[0.25,1,0],[0.5,1,0],[0.75,1,0],[1,1,0],[0,0.25,0],[0,0.5,0],[0,0.75,0],[1,0.25,0],[1,0.5,0],[1,0.75,0]];outlineConnect=0;fontColor=#232F3E;fillColor=#ED7100;strokeColor=#ffffff;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=14;fontStyle=0;aspect=fixed;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.batch;labelBackgroundColor=default;spacing=7;" parent="1" vertex="1">
+          <mxGeometry x="1080" y="25" width="78" height="78" as="geometry" />
+        </mxCell>
+        <mxCell id="DUNIo-uwOAKjHpK6f6tS-33" value="(enqueue per-chunk transcription jobs)" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;labelBackgroundColor=default;" parent="1" vertex="1">
+          <mxGeometry x="1010" y="122" width="230" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="DUNIo-uwOAKjHpK6f6tS-34" value="5) Map over chunks" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=12;" parent="1" vertex="1">
+          <mxGeometry x="930" y="173" width="130" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="DUNIo-uwOAKjHpK6f6tS-35" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.58;entryY=0.971;entryDx=0;entryDy=0;entryPerimeter=0;" parent="1" target="DUNIo-uwOAKjHpK6f6tS-23" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="872" y="471" as="sourcePoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="DUNIo-uwOAKjHpK6f6tS-36" value="Returns the manifest location in S3" style="text;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="875" y="392" width="110" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="DUNIo-uwOAKjHpK6f6tS-39" value="&lt;div style=&quot;text-align: center;&quot;&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255)); text-wrap-mode: nowrap;&quot;&gt;6) Submit&lt;/span&gt;&lt;/div&gt;" style="text;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="1213" y="41" width="60" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="DUNIo-uwOAKjHpK6f6tS-43" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="DUNIo-uwOAKjHpK6f6tS-41" target="DUNIo-uwOAKjHpK6f6tS-37" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1367" y="167" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="DUNIo-uwOAKjHpK6f6tS-44" value="&lt;span style=&quot;font-size: 12px;&quot;&gt;7) Pull Image&lt;/span&gt;" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];labelBackgroundColor=default;" parent="DUNIo-uwOAKjHpK6f6tS-43" vertex="1" connectable="0">
+          <mxGeometry x="-0.2813" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="DUNIo-uwOAKjHpK6f6tS-41" value="&lt;div&gt;&lt;font style=&quot;font-size: 14px;&quot;&gt;Amazon ECR&lt;/font&gt;&lt;/div&gt;&lt;div&gt;Repo: openai-whisper-faster:latest&lt;/div&gt;&lt;div&gt;(Faster-Whisper / CTranslate2)&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;" style="sketch=0;points=[[0,0,0],[0.25,0,0],[0.5,0,0],[0.75,0,0],[1,0,0],[0,1,0],[0.25,1,0],[0.5,1,0],[0.75,1,0],[1,1,0],[0,0.25,0],[0,0.5,0],[0,0.75,0],[1,0.25,0],[1,0.5,0],[1,0.75,0]];outlineConnect=0;fontColor=#232F3E;fillColor=#ED7100;strokeColor=#ffffff;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=12;fontStyle=0;aspect=fixed;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.ecr;" parent="1" vertex="1">
+          <mxGeometry x="1325" y="227" width="78" height="78" as="geometry" />
+        </mxCell>
+        <mxCell id="DUNIo-uwOAKjHpK6f6tS-45" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="DUNIo-uwOAKjHpK6f6tS-37" target="DUNIo-uwOAKjHpK6f6tS-46" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1660" y="64" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="DUNIo-uwOAKjHpK6f6tS-37" value="" style="sketch=0;points=[[0,0,0],[0.25,0,0],[0.5,0,0],[0.75,0,0],[1,0,0],[0,1,0],[0.25,1,0],[0.5,1,0],[0.75,1,0],[1,1,0],[0,0.25,0],[0,0.5,0],[0,0.75,0],[1,0.25,0],[1,0.5,0],[1,0.75,0]];outlineConnect=0;fontColor=#232F3E;fillColor=#ED7100;strokeColor=#ffffff;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=14;fontStyle=0;aspect=fixed;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.batch;labelBackgroundColor=default;spacing=8;" parent="1" vertex="1">
+          <mxGeometry x="1325" y="25" width="78" height="78" as="geometry" />
+        </mxCell>
+        <mxCell id="DUNIo-uwOAKjHpK6f6tS-48" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;entryPerimeter=0;" parent="1" source="DUNIo-uwOAKjHpK6f6tS-46" target="DUNIo-uwOAKjHpK6f6tS-53" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1840" y="64" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="DUNIo-uwOAKjHpK6f6tS-46" value="&lt;font style=&quot;font-size: 14px;&quot;&gt;EC2 GPU Fleet&lt;/font&gt;&lt;div&gt;&lt;font style=&quot;&quot;&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;(g5.xlarge, autoscale ~10–16 nodes)&lt;/span&gt;&lt;/font&gt;&lt;/div&gt;&lt;div&gt;&lt;font style=&quot;&quot;&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;&lt;br&gt;&lt;/span&gt;&lt;/font&gt;&lt;/div&gt;" style="outlineConnect=0;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;shape=mxgraph.aws3.ec2;fillColor=#F58534;gradientColor=none;" parent="1" vertex="1">
+          <mxGeometry x="1612" y="17.5" width="76.5" height="93" as="geometry" />
+        </mxCell>
+        <mxCell id="DUNIo-uwOAKjHpK6f6tS-47" value="8) Run jobs" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" parent="1" vertex="1">
+          <mxGeometry x="1466" y="39" width="80" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="DUNIo-uwOAKjHpK6f6tS-49" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;entryPerimeter=0;" parent="1" source="DUNIo-uwOAKjHpK6f6tS-16" target="DUNIo-uwOAKjHpK6f6tS-46" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="355" y="-20" />
+              <mxPoint x="1650" y="-20" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="DUNIo-uwOAKjHpK6f6tS-50" value="&lt;div&gt;&lt;font style=&quot;font-size: 12px;&quot;&gt;Step 9) Jobs read audio chunks from Ingest S3&lt;/font&gt;&lt;/div&gt;" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" parent="DUNIo-uwOAKjHpK6f6tS-49" vertex="1" connectable="0">
+          <mxGeometry x="-0.0302" y="-1" relative="1" as="geometry">
+            <mxPoint x="129" y="-14" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="DUNIo-uwOAKjHpK6f6tS-52" value="&lt;div&gt;(s3:GetObject)&lt;/div&gt;&lt;div&gt;&lt;br style=&quot;font-size: 11px; background-color: rgb(255, 255, 255);&quot;&gt;&lt;/div&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" parent="1" vertex="1">
+          <mxGeometry x="910" y="-19" width="100" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="DUNIo-uwOAKjHpK6f6tS-54" value="10) Write partial JSON/segments" style="text;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="1710" y="40" width="210" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="DUNIo-uwOAKjHpK6f6tS-58" value="&lt;font&gt;&lt;span&gt;&lt;span style=&quot;font-family: Helvetica; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: pre-wrap; text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; float: none; background-color: rgb(255, 255, 255); display: inline !important;&quot;&gt;&lt;font style=&quot;color: rgb(51, 0, 26);&quot;&gt;(Spot preferred, fallback On-Demand)&lt;/font&gt;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;/font&gt;" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
+          <mxGeometry x="1440" y="80" width="121" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="DUNIo-uwOAKjHpK6f6tS-61" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=1;entryDx=0;entryDy=0;entryPerimeter=0;" parent="1" target="DUNIo-uwOAKjHpK6f6tS-53" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1200" y="464.4736842105267" as="sourcePoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="DUNIo-uwOAKjHpK6f6tS-62" value="&lt;font&gt;12) Write final outputs&lt;/font&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" parent="1" vertex="1">
+          <mxGeometry x="1421" y="439.5" width="140" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="DUNIo-uwOAKjHpK6f6tS-53" value="" style="sketch=0;points=[[0,0,0],[0.25,0,0],[0.5,0,0],[0.75,0,0],[1,0,0],[0,1,0],[0.25,1,0],[0.5,1,0],[0.75,1,0],[1,1,0],[0,0.25,0],[0,0.5,0],[0,0.75,0],[1,0.25,0],[1,0.5,0],[1,0.75,0]];outlineConnect=0;fontColor=#232F3E;fillColor=#7AA116;strokeColor=#ffffff;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=12;fontStyle=0;aspect=fixed;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.s3;spacing=6;labelBackgroundColor=default;" parent="1" vertex="1">
+          <mxGeometry x="1910" y="25" width="78" height="78" as="geometry" />
+        </mxCell>
+        <mxCell id="DUNIo-uwOAKjHpK6f6tS-64" value="&lt;span style=&quot;color: rgb(51, 0, 26); font-family: Macan, &amp;quot;Helvetica Neue&amp;quot;, Helvetica, Arial, sans-serif; font-size: 16px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: pre-wrap; text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; float: none; display: inline !important;&quot;&gt;nimbus-transcribe-results-[acct]-eu-west-1&lt;/span&gt;" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;labelBackgroundColor=default;" parent="1" vertex="1">
+          <mxGeometry x="1805" y="118" width="320" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="DUNIo-uwOAKjHpK6f6tS-66" value="&lt;span style=&quot;color: rgb(51, 0, 26); font-family: Macan, &amp;quot;Helvetica Neue&amp;quot;, Helvetica, Arial, sans-serif; text-align: left; white-space-collapse: preserve; background-color: rgb(255, 255, 255);&quot;&gt;openai-whisper-transcribe-job&lt;/span&gt;" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=14;" parent="1" vertex="1">
+          <mxGeometry x="1269" y="115.5" width="210" height="25" as="geometry" />
+        </mxCell>
+        <mxCell id="7wUf3IL1HfSVNumFUlSG-5" value="&lt;span style=&quot;font-size: 14px; text-wrap-mode: wrap;&quot;&gt;StartRun Lambda&lt;/span&gt;" style="outlineConnect=0;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;shape=mxgraph.aws3.lambda_function;fillColor=#5294CF;gradientColor=none;" parent="1" vertex="1">
+          <mxGeometry x="570" y="188" width="60" height="63" as="geometry" />
+        </mxCell>
+        <mxCell id="7wUf3IL1HfSVNumFUlSG-6" value="Prepare Lambda" style="outlineConnect=0;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;shape=mxgraph.aws3.lambda_function;fillColor=#5294CF;gradientColor=none;" parent="1" vertex="1">
+          <mxGeometry x="820" y="460" width="60" height="63" as="geometry" />
+        </mxCell>
+        <mxCell id="7wUf3IL1HfSVNumFUlSG-7" value="&lt;font style=&quot;font-size: 14px;&quot;&gt;Stitcher Lambda&lt;/font&gt;&lt;div&gt;&lt;div&gt;(Reads partials from S3 Results&lt;/div&gt;&lt;div&gt;Merges → final transcript files)&lt;/div&gt;&lt;/div&gt;" style="outlineConnect=0;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;shape=mxgraph.aws3.lambda_function;fillColor=#5294CF;gradientColor=none;" parent="1" vertex="1">
+          <mxGeometry x="1140" y="432" width="60" height="63" as="geometry" />
+        </mxCell>
+        <mxCell id="7wUf3IL1HfSVNumFUlSG-8" value="" style="group" parent="1" vertex="1" connectable="0">
+          <mxGeometry x="1764" y="495" width="370" height="137" as="geometry" />
+        </mxCell>
+        <mxCell id="7wUf3IL1HfSVNumFUlSG-1" value="&lt;b&gt;Legend&lt;/b&gt;" style="rounded=0;whiteSpace=wrap;html=1;verticalAlign=top;fillColor=#f5f5f5;strokeColor=#666666;gradientColor=#b3b3b3;" parent="7wUf3IL1HfSVNumFUlSG-8" vertex="1">
+          <mxGeometry width="362.16931216931215" height="137" as="geometry" />
+        </mxCell>
+        <mxCell id="7wUf3IL1HfSVNumFUlSG-3" value="&lt;div style=&quot;text-align: left;&quot;&gt;&lt;span&gt;&lt;br&gt;&lt;/span&gt;&lt;/div&gt;&lt;div style=&quot;text-align: left;&quot;&gt;&lt;span&gt;&lt;span style=&quot;color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255)); text-wrap-mode: nowrap;&quot;&gt;🟩&amp;nbsp;&lt;/span&gt;&lt;strong style=&quot;color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255)); text-wrap-mode: nowrap;&quot; data-end=&quot;252&quot; data-start=&quot;241&quot;&gt;Storage&lt;/strong&gt;&lt;span style=&quot;color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255)); text-wrap-mode: nowrap;&quot;&gt;&amp;nbsp;→ S3 (Ingest, Results), ECR&lt;/span&gt;&lt;/span&gt;&lt;/div&gt;&lt;span style=&quot;background-color: light-dark(#ffffff, var(--ge-dark-color, #121212));&quot;&gt;&lt;span style=&quot;color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;&lt;div style=&quot;text-align: left;&quot;&gt;&lt;span style=&quot;color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;🔵&lt;/span&gt;&lt;span style=&quot;color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;&amp;nbsp;&lt;/span&gt;&lt;strong style=&quot;color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot; data-end=&quot;312&quot; data-start=&quot;288&quot;&gt;Compute (Serverless)&lt;/strong&gt;&lt;span style=&quot;color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;&amp;nbsp;&lt;/span&gt;&lt;span style=&quot;color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;→ Lambda functions&lt;/span&gt;&lt;/div&gt;&lt;/span&gt;&lt;span style=&quot;color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;&lt;div style=&quot;text-align: left;&quot;&gt;&lt;span style=&quot;color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;🟧&lt;/span&gt;&lt;span style=&quot;color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;&amp;nbsp;&lt;/span&gt;&lt;strong style=&quot;color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot; data-end=&quot;368&quot; data-start=&quot;339&quot;&gt;Compute (Batch/Instances)&lt;/strong&gt;&lt;span style=&quot;color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;&amp;nbsp;&lt;/span&gt;&lt;span style=&quot;color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;→ AWS Batch, EC2 GPU Fleet&lt;/span&gt;&lt;/div&gt;&lt;/span&gt;&lt;span style=&quot;color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;&lt;div style=&quot;text-align: left;&quot;&gt;&lt;span style=&quot;color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;🩷&lt;/span&gt;&lt;span style=&quot;color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;&amp;nbsp;&lt;/span&gt;&lt;strong style=&quot;color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot; data-end=&quot;420&quot; data-start=&quot;403&quot;&gt;Orchestration&lt;/strong&gt;&lt;span style=&quot;color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;&amp;nbsp;&lt;/span&gt;&lt;span style=&quot;color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;→ Step Functions&lt;/span&gt;&lt;/div&gt;&lt;/span&gt;&lt;/span&gt;&lt;div&gt;&lt;div style=&quot;text-align: left;&quot;&gt;&lt;span&gt;&lt;span style=&quot;color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;⚪&amp;nbsp;&lt;/span&gt;&lt;strong style=&quot;color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot; data-end=&quot;472&quot; data-start=&quot;444&quot;&gt;Optional/Future (Dashed)&lt;/strong&gt;&lt;span style=&quot;color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;&amp;nbsp;&lt;/span&gt;&lt;span style=&quot;color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;→ Manual Start, EventBridge, DynamoDB, SNS, Alarms&lt;/span&gt;&lt;/span&gt;&lt;/div&gt;&lt;div style=&quot;text-align: left;&quot;&gt;&lt;span style=&quot;background-color: light-dark(#ffffff, var(--ge-dark-color, #121212));&quot;&gt;&lt;br&gt;&lt;/span&gt;&lt;/div&gt;&lt;div style=&quot;text-align: left;&quot;&gt;&lt;br&gt;&lt;/div&gt;&lt;/div&gt;" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="7wUf3IL1HfSVNumFUlSG-8" vertex="1">
+          <mxGeometry x="7.830687830687831" y="27" width="362.16931216931215" height="104.5" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
