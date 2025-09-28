@@ -1,0 +1,6 @@
+Audio length: 47 minutes
+Number of chunks: 14
+GPU count used: 8 (g5.xlarge)
+Per-GPU throughput: ~4.3× realtime
+Aggregate throughput: ~34× realtime (8 × 4.3)
+Wall-clock runtime observed: ~5m14s
