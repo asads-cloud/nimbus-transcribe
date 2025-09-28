@@ -188,8 +188,11 @@ def ffmpeg_cut(
 
     cmd = [
         ffmpeg_bin, "-hide_banner", "-nostdin",
-        "-ss", str(start), "-i", input_path,
+        #"-i", input_path,
+        "-ss", str(start), 
+        "-i", input_path,
         "-t", str(duration),
+        #"-accurate_seek",
         *acodec,
         "-y", out_path
     ]
@@ -259,19 +262,20 @@ def lambda_handler(event, context):
     # Build and upload manifest (JSON Lines)
     manifest_key = f"{MANIFEST_PREFIX_BASE}/{job_id}.jsonl"
     manifest_path = workdir / "manifest.jsonl"
-    with open(manifest_path, "w", encoding="utf-8") as f:
+    with open(manifest_path, "w", encoding="utf-8", newline="\n") as f:
         for idx, start, end in windows:
+            # keys in the exact required order: index,start_sec,end_sec,job_id,in_uri
             line = {
-                "s3_uri": s3_uri(INGEST_BUCKET, f"{CHUNK_PREFIX_BASE}/{job_id}/{idx:03d}.{CHUNK_EXT}"),
+                "index": idx,
                 "start_sec": start,
                 "end_sec": end,
-                "index": idx,
                 "job_id": job_id,
-                "source_bucket": src_bucket,
-                "source_key": src_key,
+                "in_uri": s3_uri(INGEST_BUCKET, f"{CHUNK_PREFIX_BASE}/{job_id}/{idx:03d}.{CHUNK_EXT}"),
             }
-            f.write(json.dumps(line, ensure_ascii=False) + "\n")
+            # compact JSON (no spaces) to match your sample
+            f.write(json.dumps(line, ensure_ascii=False, separators=(",", ":")) + "\n")
 
+    # use x-ndjson for line-delimited JSON; if your reader expects application/json, keep that
     s3.upload_file(str(manifest_path), INGEST_BUCKET, manifest_key, ExtraArgs={"ContentType": "application/json"})
     log.info(f"Uploaded manifest: {s3_uri(INGEST_BUCKET, manifest_key)}")
 

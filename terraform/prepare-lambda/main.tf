@@ -162,9 +162,9 @@ resource "aws_lambda_function" "openai_prepare" {
       INGEST_BUCKET        = var.ingest_bucket_name
       CHUNK_PREFIX_BASE    = "chunks"
       MANIFEST_PREFIX_BASE = "manifests"
-      CHUNK_LEN_SEC        = "600"
-      OVERLAP_SEC          = "1"
-      CHUNK_EXT            = "wav"
+      CHUNK_LEN_SEC        = "200"
+      OVERLAP_SEC          = "3"
+      CHUNK_EXT            = "mp3"
     }
   }
 

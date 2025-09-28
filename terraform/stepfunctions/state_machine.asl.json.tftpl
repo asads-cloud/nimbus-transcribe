@@ -38,10 +38,11 @@
                 "Memory": ${batch_override_memory_mib},
                 "Environment": [
                   { "Name": "IN_URI",  "Value.$": "$.chunk.in_uri" },
-                  { "Name": "OUT_URI",       "Value.$": "States.Format('s3://{}/chunks/{}/out.json', $.results_bucket, $.chunk.job_id)" },
+                  { "Name": "OUT_URI",     "Value.$": "States.Format('s3://{}/chunks/{}/{}/out.json', $.results_bucket, $.chunk.job_id, $.chunk.index)" },
+                  { "Name": "CHUNK_INDEX", "Value.$": "States.Format('{}', $.chunk.index)" },
                   { "Name": "OUT_BUCKET",    "Value.$": "$.results_bucket" },
-                  { "Name": "OUT_PREFIX",    "Value.$": "States.Format('chunks/{}/', $.chunk.job_id)" },
-                  { "Name": "RESULTS_PREFIX","Value.$": "States.Format('chunks/{}/', $.chunk.job_id)" },
+                  { "Name": "OUT_PREFIX",     "Value.$": "States.Format('chunks/{}/{}/', $.chunk.job_id, $.chunk.index)" },
+                  { "Name": "RESULTS_PREFIX", "Value.$": "States.Format('chunks/{}/{}/', $.chunk.job_id, $.chunk.index)" },
                   { "Name": "MODEL",     "Value.$": "$.model" },
                   { "Name": "LANGUAGE",  "Value.$": "$.language" },
                   { "Name": "COMPUTE_TYPE","Value.$": "$.compute_type" },
@@ -57,7 +58,37 @@
           }
         }
       },
+      "ResultPath": "$.chunks",
       "Label": "Chunks",
+      "Next": "Stitcher"
+    },
+
+    "Stitcher": {
+      "Type": "Task",
+      "Comment": "Combine chunk outputs and emit final artifacts",
+      "Resource": "arn:aws:states:::lambda:invoke",
+      "OutputPath": "$.Payload",
+      "Parameters": {
+        "FunctionName": "${stitcher_lambda_arn}",
+        "Payload": {
+          "manifest_bucket": "${ingest_bucket_name}",
+          "results_bucket": "${results_bucket_name}",
+          "manifest_key.$": "$.manifest_key",
+          "language.$": "$.language"
+        }
+      },
+      "Retry": [
+        {
+          "ErrorEquals": [
+            "Lambda.ServiceException",
+            "Lambda.AWSLambdaException",
+            "Lambda.SdkClientException"
+          ],
+          "IntervalSeconds": 2,
+          "BackoffRate": 2.0,
+          "MaxAttempts": 4
+        }
+      ],
       "End": true
     }
   }

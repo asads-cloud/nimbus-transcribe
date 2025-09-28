@@ -12,14 +12,45 @@
 # - Must reference *instance profile* ARN for EC2 hosts
 ###############################################################################
 
+###############################################################################
+# compute.tf — AWS Batch Compute Environment (GPU) with larger root EBS
+###############################################################################
+
+###############################################################################
+# compute.tf — AWS Batch Compute Environment (GPU) + Launch Template (200 GiB)
+###############################################################################
+
 # ── Local values ─────────────────────────────────────────────────────────────
 locals {
-  compute_env_name = "openai-whisper-gpu-env"
+  compute_env_name_old = "openai-whisper-gpu-env"      # existing CE (kept for now)
+  compute_env_name_new = "openai-whisper-gpu-env-v2"   # new CE (with larger disk)
 }
 
-# ── Compute Environment ──────────────────────────────────────────────────────
+# ── AMI for ECS + NVIDIA ─────────────────────────────────────────────────────
+# Batch uses this AMI family; LT still needs an ImageId.
+data "aws_ssm_parameter" "ecs_al2_gpu_ami" {
+  name = "/aws/service/ecs/optimized-ami/amazon-linux-2/gpu/recommended/image_id"
+}
+
+# ── Launch Template with larger root EBS ─────────────────────────────────────
+resource "aws_launch_template" "whisper_gpu_lt" {
+  name_prefix = "whisper-gpu-"
+  image_id    = data.aws_ssm_parameter.ecs_al2_gpu_ami.value
+
+  block_device_mappings {
+    device_name = "/dev/xvda"
+    ebs {
+      volume_size           = 200      # <-- root disk size (GiB)
+      volume_type           = "gp3"
+      delete_on_termination = true
+    }
+  }
+}
+
+# ── EXISTING Compute Environment (left as-is so TF doesn't try to delete it) ─
+# NOTE: we keep this resource block unchanged; Job Queue will be moved to v2.
 resource "aws_batch_compute_environment" "gpu_env" {
-  compute_environment_name = local.compute_env_name
+  compute_environment_name = local.compute_env_name_old
   type                     = "MANAGED"
   state                    = "ENABLED"
   service_role             = aws_iam_role.batch_service.arn
@@ -36,10 +67,10 @@ resource "aws_batch_compute_environment" "gpu_env" {
     # Auto-scaling range (vCPUs)
     min_vcpus     = 0
     desired_vcpus = 0
-    max_vcpus     = 16
+    max_vcpus     = 32
 
     # GPU-enabled EC2 instance type
-    instance_type = ["g5.xlarge"]
+    instance_type = ["g5.xlarge"]      # <-- plural
 
     # Networking
     subnets            = data.aws_subnets.default.ids
@@ -51,6 +82,44 @@ resource "aws_batch_compute_environment" "gpu_env" {
     }
 
     # Must use the *instance profile* ARN (not just the role ARN)
+    instance_role = aws_iam_instance_profile.ecs_instance_profile.arn
+  }
+}
+
+# ── NEW Compute Environment (blue/green) — uses the Launch Template ──────────
+resource "aws_batch_compute_environment" "gpu_env_v2" {
+  compute_environment_name = local.compute_env_name_new
+  type                     = "MANAGED"
+  state                    = "ENABLED"
+  service_role             = aws_iam_role.batch_service.arn
+
+  tags = {
+    Project = "nimbus-transcribe"
+    Phase   = "3-aws-batch-gpu"
+  }
+
+  compute_resources {
+    type                = "EC2"
+    allocation_strategy = "BEST_FIT_PROGRESSIVE"
+
+    # Auto-scaling range (match old; change if you want)
+    min_vcpus     = 0
+    desired_vcpus = 0
+    max_vcpus     = 32
+
+    instance_type = ["g5.xlarge"]
+
+    subnets            = data.aws_subnets.default.ids
+    security_group_ids = [aws_security_group.batch_instances.id]
+
+    ec2_configuration { image_type = "ECS_AL2_NVIDIA" }
+
+    # Use the LT with the bigger root disk
+    launch_template {
+      launch_template_id = aws_launch_template.whisper_gpu_lt.id
+      version            = "$Latest"
+    }
+
     instance_role = aws_iam_instance_profile.ecs_instance_profile.arn
   }
 }

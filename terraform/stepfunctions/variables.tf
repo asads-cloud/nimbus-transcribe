@@ -49,7 +49,12 @@ variable "state_machine_name" {
 variable "map_max_concurrency" {
   description = "Maximum number of child workflows to run in parallel in the Distributed Map state"
   type        = number
-  default     = 10
+  default     = 100
+}
+
+variable "openai_stitcher_lambda_arn" {
+  description = "ARN of the openai-whisper-stitcher Lambda"
+  type        = string
 }
 
 # ── AWS Batch Integration ────────────────────────────────────────────────────
@@ -72,5 +77,5 @@ variable "batch_override_vcpus" {
 variable "batch_override_memory_mib" {
   description = "Container memory MiB override for Batch job"
   type        = number
-  default     = 10000
+  default     = 11000
 }

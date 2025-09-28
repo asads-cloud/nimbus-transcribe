@@ -20,6 +20,9 @@ locals {
     map_max_concurrency      = var.map_max_concurrency
     batch_override_vcpus      = var.batch_override_vcpus
     batch_override_memory_mib = var.batch_override_memory_mib
+    stitcher_lambda_arn       = var.openai_stitcher_lambda_arn
+    ingest_bucket_name        = var.ingest_bucket_name
+    results_bucket_name       = var.results_bucket_name
   })
 }
 
