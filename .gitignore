@@ -40,3 +40,4 @@ lambda/*/package.zip
 # Artifacts — keep demo subfolder only
 artifacts/**/*
 !artifacts/demo/**
+audios/
