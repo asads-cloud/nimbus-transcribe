@@ -36,8 +36,11 @@ docker/**/dist/
 lambda/*/dist/
 lambda/*/package.zip
 *.zip
+lambdas/
 
 # Artifacts — keep demo subfolder only
-artifacts/**/*
+artifacts/**
+!artifacts/demo/
 !artifacts/demo/**
 audios/
+$([System.Environment]::NewLine)*.tfplan

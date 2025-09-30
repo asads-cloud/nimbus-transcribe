@@ -22,7 +22,7 @@
 
 # ── Local values ─────────────────────────────────────────────────────────────
 locals {
-  compute_env_name_old = "openai-whisper-gpu-env"      # existing CE (kept for now)
+  compute_env_name_old = "openai-whisper-gpu-env"      # old CE
   compute_env_name_new = "openai-whisper-gpu-env-v2"   # new CE (with larger disk)
 }
 
@@ -47,8 +47,8 @@ resource "aws_launch_template" "whisper_gpu_lt" {
   }
 }
 
-# ── EXISTING Compute Environment (left as-is so TF doesn't try to delete it) ─
-# NOTE: we keep this resource block unchanged; Job Queue will be moved to v2.
+# ── OLD Compute Environment ──────────────────────────────────
+
 resource "aws_batch_compute_environment" "gpu_env" {
   compute_environment_name = local.compute_env_name_old
   type                     = "MANAGED"
@@ -86,7 +86,7 @@ resource "aws_batch_compute_environment" "gpu_env" {
   }
 }
 
-# ── NEW Compute Environment (blue/green) — uses the Launch Template ──────────
+# ── NEW Compute Environment ──────────────────────────────────
 resource "aws_batch_compute_environment" "gpu_env_v2" {
   compute_environment_name = local.compute_env_name_new
   type                     = "MANAGED"
@@ -102,7 +102,7 @@ resource "aws_batch_compute_environment" "gpu_env_v2" {
     type                = "EC2"
     allocation_strategy = "BEST_FIT_PROGRESSIVE"
 
-    # Auto-scaling range (match old; change if you want)
+    # Auto-scaling range
     min_vcpus     = 0
     desired_vcpus = 0
     max_vcpus     = 32
@@ -114,7 +114,6 @@ resource "aws_batch_compute_environment" "gpu_env_v2" {
 
     ec2_configuration { image_type = "ECS_AL2_NVIDIA" }
 
-    # Use the LT with the bigger root disk
     launch_template {
       launch_template_id = aws_launch_template.whisper_gpu_lt.id
       version            = "$Latest"
