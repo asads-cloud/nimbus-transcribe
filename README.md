@@ -1,98 +1,125 @@
-**Nimbus Transcribe** is a next-generation **cloud-native transcription and automation platform**.  
-Built on top of **AWS serverless services**, it delivers scalable, fault-tolerant, and high-performance pipelines for transforming audio into actionable data.  
+# Nimbus Transcribe  
 
-By combining **serverless compute (Lambda, Step Functions)** with **GPU-powered parallel batch jobs** and **infrastructure automation (Terraform)**, Nimbus Transcribe enables true end-to-end orchestration of data and media workflows.
+**Nimbus Transcribe** is a **cloud-native transcription platform** engineered to transform long-form audio into accurate, structured text at scale.  
 
----
+Built entirely on **AWS serverless and GPU-powered infrastructure**, it demonstrates how to deliver **production-ready, massively parallel pipelines** for data-heavy media workflows.  
 
-## ✨ Key Features
-
-- ⚡ **Serverless Audio Processing**: Modular **AWS Lambda functions** for audio preparation, stitching, and transformation.  
-- 🗂️ **S3-backed Data Lake**: Seamless ingestion and results buckets for reliable, cost-efficient storage.  
-- 🔄 **Workflow Orchestration**: Automated pipelines via **AWS Step Functions (Distributed Map)** for parallel execution and error-resilient coordination.  
-- 🐳 **Containerized Compute**: **Dockerized tools** for reproducible builds and **AWS Batch (GPU)** for ultra-fast Whisper transcription.  
-- 🛠️ **Infrastructure as Code**: End-to-end reproducibility with **Terraform**, enabling consistent environments across teams and regions.  
-- 🤖 **Automation & CI/CD**: Pre-built **GitHub Actions workflows** for deployments, testing, and continuous integration.  
+This project showcases expertise in **distributed systems, applied machine learning, and infrastructure as code** — designed and implemented end-to-end by *Asad Rana (BSc Mathematics, University of Manchester)*.  
 
 ---
 
-## 📊 Problem Statement
+## ✨ Highlights  
 
-Transcribe **long-form, multilingual audio** quickly and cost-effectively:
-- **Target:** 10 hours of audio in ≤20 minutes wall-clock  
-- **Accuracy:** Whisper large-v3 via Faster-Whisper/CTranslate2 (`compute_type=int8_float16`)  
-- **Scale:** Handle workloads across research, media, and enterprise automation.  
+- **⚡ Scalable Audio Processing**  
+  - Prepare, stitch, and transform audio using modular **AWS Lambda functions**.  
+- **☁️ Cloud-Native Data Lake**  
+  - **S3 ingestion and results buckets** ensure reliable, cost-efficient storage.  
+- **🔄 Distributed Orchestration**  
+  - **AWS Step Functions (Distributed Map)** orchestrates thousands of parallel jobs with built-in retries and error handling.  
+- **🖥️ GPU Acceleration**  
+  - **AWS Batch with Dockerised Whisper** models delivers ≈30× real-time transcription (TBC).  
+- **📦 Infrastructure as Code**  
+  - Fully reproducible deployments with **Terraform** across regions and accounts.  
+- **🤖 CI/CD Automation**  
+  - **GitHub Actions** for testing, packaging, and seamless deployment.  
+
+---
+
+## 🎯 Problem Statement  
+
+Transcribing **hours of multilingual, long-form audio** quickly, reliably, and at low cost:  
+
+- **Target throughput:** 10 hours of audio in ≤20 minutes wall-clock  
+- **Accuracy:** OpenAI Whisper Large-v3 via Faster-Whisper/CTranslate2 (`compute_type=int8_float16`)  
+- **Scalability:** Designed for research labs, media houses, and enterprise automation.  
 
 ---
 
 ## 🏗️ Architecture Overview  
 
-![Architecture Diagram](docs/architecture-diagram.png)
+![Architecture Diagram](docs/architecture-diagram.png)  
 
 **Data Flow:**  
-S3 (ingest) → Lambda (Prepare: 10m chunks + 1s overlap) → Step Functions (Distributed Map) → AWS Batch (GPU workers) → Lambda (Stitcher: merge JSON/TXT/SRT/VTT) → S3 (results)  
+1. **S3 (Ingest)** →  
+2. **Lambda (Prepare):** e.g. configuration: split into 10-minute chunks (+1s overlap) →  
+3. **Step Functions (Distributed Map):** orchestrate jobs as many jobs needed →  
+4. **AWS Batch (GPU Workers):** run Whisper via ECR →  
+5. **Lambda (Stitcher):** merge JSON/TXT/SRT/VTT →  
+6. **S3 (Results)**  
 
 **Core Components:**  
-- **Buckets:** `nimbus-ingest-<acct>-<region>`, `nimbus-results-<acct>-<region>`  
-- **State Machine:** `nimbus-transcribe-map` (configurable MaxConcurrency)  
-- **Batch Job:** `nimbus-transcribe-job` running `whisper-faster:latest`  
-- **Lambdas:** Prepare, Stitcher, Orchestrate  
+- **Buckets:** `nimbus-trasncribe-ingest-<acct>-<region>`, `nimbus-transcribe-results-<acct>-<region>`  
+- **State Machine:** `oepnai-whisper-transcribe-map` (configurable concurrency)  
+- **Batch Job:** `openai-whisper-transcribe-job` (`openai-whisper-faster:latest`)  
+- **Lambdas:** Prepare, Stitcher  
 
 ---
 
-## 📈 SLA Math (Example)
+## 📈 Performance & Cost (TBC)  
 
-- Total audio: `T_total = 10h`  
-- Chunking: `~10 min` per chunk (+1s overlap) ⇒ `~60 chunks per 10h`  
-- Per-GPU throughput (× real-time): `R_gpu = TBD`  
-- GPU count: `N = TBD` (e.g., 10–16 g5.xlarge)  
-- Aggregate throughput: `R_agg = N × R_gpu`  
-- Expected wall-clock: `T_total / R_agg + overhead(prepare+stitch)`  
-- **Observed demo:** TBD  
-
----
-
-## 💰 Cost Estimate (Rough)
-
-- **GPU:** g5.xlarge (A10G) × `N` × runtime ≈ `TBD`  
-- **Other services:** EBS / ECR / S3 / Step Functions / Lambda ≈ `TBD`  
-- **Run total:** ~`$15` per 10h transcription (replace with measured values)  
+- **Throughput:** ~30× real-time transcription on g5.xlarge (A10G) GPUs  
+- **Example SLA:**  
+  - 10h audio → ~20 minutes wall-clock (N≈16 GPUs)  
+- **Estimated Cost:**  
+  - GPU compute: ~$12–15 per 10h transcription  
+  - Supporting services (S3, Lambda, Step Functions): ~$1–2  
+  - **Total:** ~`$15` for 10h audio (to be confirmed with final benchmark)  
 
 ---
 
-## 📂 Repository Structure
+## 📂 Repository Structure  
 
 ```
-docker/       # Container images for AWS Batch & GPU-accelerated tools
-lambdas/      # AWS Lambda functions (prepare, stitch, orchestrate, etc.)
-terraform/    # Infrastructure as Code (state, modules, environments)
-artifacts/    # Build outputs (local-only, gitignored)
-scripts/      # All my helper powershell scripts
-.github/      # CI/CD workflows, actions, issue/PR templates
-docs/ # Architecture diagrams, notes, design docs
-```
+docker/       # Container images for GPU-powered Batch jobs
+lambdas/      # Lambda functions (prepare, stitch, orchestrate)
+terraform/    # IaC: state, modules, environments
+scripts/      # Helper PowerShell utilities
+.github/      # CI/CD workflows and automation
+docs/         # Architecture diagrams and notes
+artifacts/    # video + output run throughs
+```  
 
 ---
 
-## 🚀 Getting Started
+## 🚀 Quick Start  
 
-Clone the repository:
+Clone the repository:  
 
 ```bash
 git clone https://github.com/asads-cloud/nimbus-transcribe.git
 cd nimbus-transcribe
 ```
 
-Build the dev container:
+Build the dev container:  
 
 ```bash
 docker build -t nimbus-tools ./docker
 ```
 
-Deploy infrastructure:
+Deploy infrastructure with Terraform on individual modules(check terraform/README.md for details):  
 
 ```bash
-cd terraform
+cd terraform/...
 terraform init
 terraform apply
 ```
+
+Package & push the GPU worker image:  
+
+```powershell
+# docker build / tag / push commands here
+```
+
+Update Lambda functions:  
+
+```powershell
+# zip prepare & stitcher, update Lambda functions
+```
+
+---
+
+## 👨‍💻 Author  
+
+Designed and built by **Asad Rana**  
+- 🎓 BSc Mathematics (Specialisation: Statistics), University of Manchester  
+- 🌐 Focus: Cloud architecture, distributed systems, and applied AI  

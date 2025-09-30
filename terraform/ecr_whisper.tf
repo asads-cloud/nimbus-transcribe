@@ -6,6 +6,29 @@
 # - Defines a lifecycle policy to manage image retention
 # - Exposes repository URL + ARN as Terraform outputs
 ###############################################################################
+# Terraform + Provider
+###############################################################################
+terraform {
+  required_version = ">= 1.5.0"
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = "~> 5.0"
+    }
+  }
+}
+
+variable "region" {
+  description = "AWS region to deploy into"
+  type        = string
+  default     = "eu-west-1"
+}
+
+provider "aws" {
+  region = var.region
+}
+
+
 
 # ─────────────────────────────────────────────────────────────────────────────
 # ECR Repository

@@ -43,3 +43,4 @@ artifacts/**
 !artifacts/demo/
 !artifacts/demo/**
 audios/
+$([System.Environment]::NewLine)*.tfplan

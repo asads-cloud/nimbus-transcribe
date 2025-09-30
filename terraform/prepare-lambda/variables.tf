@@ -17,8 +17,6 @@ variable "project" {
 }
 
 # ── S3 buckets ───────────────────────────────────────────────────────────────
-# Bucket names must be globally unique in AWS.
-# Change these if conflicts occur in another AWS account/region.
 variable "ingest_bucket_name" {
   type    = string
   default = "openai-whisper-xcribe-ingest"
