@@ -79,3 +79,14 @@ variable "batch_override_memory_mib" {
   type        = number
   default     = 11000
 }
+
+# ── AWS Batch Compute Environment identifiers ────────────────────────────────
+variable "compute_environment_name" {
+  description = "Name of the AWS Batch Compute Environment (e.g., openai-whisper-gpu-env)"
+  type        = string
+}
+
+variable "compute_environment_arn" {
+  description = "ARN of the AWS Batch Compute Environment"
+  type        = string
+}

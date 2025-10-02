@@ -100,7 +100,7 @@ data "aws_iam_policy_document" "ecs_tasks_trust" {
 # Inline policy: allow R/W access to ingest + results buckets
 data "aws_iam_policy_document" "job_s3_access" {
   statement {
-    sid     = "S3ReadWriteIngestAndResults"
+    sid = "S3ReadWriteIngestAndResults"
     actions = [
       "s3:GetObject", "s3:PutObject", "s3:DeleteObject",
       "s3:ListBucket"

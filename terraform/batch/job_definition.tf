@@ -40,10 +40,10 @@ resource "aws_batch_job_definition" "openai_whisper_job" {
 
     # Default environment variables (can be overridden per job)
     environment = [
-      { name = "MODEL",          value = "large-v3" },
-      { name = "LANGUAGE",       value = "auto" },
-      { name = "COMPUTE_TYPE",   value = "int8_float16" },
-      { name = "CHUNK_S3_URI",   value = "" },
+      { name = "MODEL", value = "large-v3" },
+      { name = "LANGUAGE", value = "auto" },
+      { name = "COMPUTE_TYPE", value = "int8_float16" },
+      { name = "CHUNK_S3_URI", value = "" },
       { name = "RESULTS_BUCKET", value = "" },
       { name = "RESULTS_PREFIX", value = "chunks/" }
     ]

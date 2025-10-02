@@ -35,3 +35,8 @@ variable "ecr_image_uri" {
   description = "Full ECR image URI for openai-whisper-faster:latest"
   type        = string
 }
+
+
+variable "ecr_account_id" { type = string }
+variable "ecr_repo" { type = string }
+variable "ecr_tag" { type = string }
