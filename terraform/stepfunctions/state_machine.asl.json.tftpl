@@ -1,7 +1,18 @@
 {
-  "Comment": "Openai Whisper Distributed Map over manifest.jsonl -> Batch GPU jobs",
-  "StartAt": "FanOutNimbusTranscribes",
+  "Comment": "Openai Whisper Distributed Map over manifest.jsonl -> Batch GPU jobs (with CE scale up/down)",
+  "StartAt": "ScaleUpCE",
   "States": {
+    "ScaleUpCE": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::aws-sdk:batch:updateComputeEnvironment",
+      "Parameters": {
+        "ComputeEnvironment": "${compute_env_name}",
+        "ComputeResources": { "DesiredvCpus": 32 }
+      },
+      "ResultPath": null,
+      "Next": "FanOutNimbusTranscribes"
+    },
+
     "FanOutNimbusTranscribes": {
       "Type": "Map",
       "MaxConcurrency": ${map_max_concurrency},
@@ -38,18 +49,18 @@
                 "Memory": ${batch_override_memory_mib},
                 "Environment": [
                   { "Name": "IN_URI",  "Value.$": "$.chunk.in_uri" },
-                  { "Name": "OUT_URI",     "Value.$": "States.Format('s3://{}/chunks/{}/{}/out.json', $.results_bucket, $.chunk.job_id, $.chunk.index)" },
+                  { "Name": "OUT_URI", "Value.$": "States.Format('s3://{}/chunks/{}/{}/out.json', $.results_bucket, $.chunk.job_id, $.chunk.index)" },
                   { "Name": "CHUNK_INDEX", "Value.$": "States.Format('{}', $.chunk.index)" },
-                  { "Name": "OUT_BUCKET",    "Value.$": "$.results_bucket" },
-                  { "Name": "OUT_PREFIX",     "Value.$": "States.Format('chunks/{}/{}/', $.chunk.job_id, $.chunk.index)" },
+                  { "Name": "OUT_BUCKET", "Value.$": "$.results_bucket" },
+                  { "Name": "OUT_PREFIX", "Value.$": "States.Format('chunks/{}/{}/', $.chunk.job_id, $.chunk.index)" },
                   { "Name": "RESULTS_PREFIX", "Value.$": "States.Format('chunks/{}/{}/', $.chunk.job_id, $.chunk.index)" },
-                  { "Name": "MODEL",     "Value.$": "$.model" },
-                  { "Name": "LANGUAGE",  "Value.$": "$.language" },
-                  { "Name": "COMPUTE_TYPE","Value.$": "$.compute_type" },
+                  { "Name": "MODEL", "Value.$": "$.model" },
+                  { "Name": "LANGUAGE", "Value.$": "$.language" },
+                  { "Name": "COMPUTE_TYPE", "Value.$": "$.compute_type" },
                   { "Name": "BEAM_SIZE", "Value.$": "States.Format('{}', $.beam_size)" },
-                  { "Name": "VAD",       "Value.$": "States.Format('{}', $.vad)" },
+                  { "Name": "VAD", "Value.$": "States.Format('{}', $.vad)" },
                   { "Name": "HF_HUB_ENABLE_HF_TRANSFER", "Value": "0" },
-                  { "Name": "HF_ENDPOINT",               "Value": "https://huggingface.co" }
+                  { "Name": "HF_ENDPOINT", "Value": "https://huggingface.co" }
                 ]
               }
             },
@@ -60,7 +71,14 @@
       },
       "ResultPath": "$.chunks",
       "Label": "Chunks",
-      "Next": "Stitcher"
+      "Next": "Stitcher",
+      "Catch": [
+        {
+          "ErrorEquals": [ "States.ALL" ],
+          "ResultPath": "$.error",
+          "Next": "ScaleDownCE_Fail"
+        }
+      ]
     },
 
     "Stitcher": {
@@ -89,7 +107,42 @@
           "MaxAttempts": 4
         }
       ],
+      "Next": "ScaleDownCE_Succeed",
+      "Catch": [
+        {
+          "ErrorEquals": [ "States.ALL" ],
+          "ResultPath": "$.error",
+          "Next": "ScaleDownCE_Fail"
+        }
+      ]
+    },
+
+    "ScaleDownCE_Succeed": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::aws-sdk:batch:updateComputeEnvironment",
+      "Parameters": {
+        "ComputeEnvironment": "${compute_env_name}",
+        "ComputeResources": { "DesiredvCpus": 0 }
+      },
+      "ResultPath": null,
       "End": true
+    },
+
+    "ScaleDownCE_Fail": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::aws-sdk:batch:updateComputeEnvironment",
+      "Parameters": {
+        "ComputeEnvironment": "${compute_env_name}",
+        "ComputeResources": { "DesiredvCpus": 0 }
+      },
+      "ResultPath": null,
+      "Next": "FailAll"
+    },
+
+    "FailAll": {
+      "Type": "Fail",
+      "Error": "PipelineFailed",
+      "Cause": "Map/Stitcher failed; CE scaled down"
     }
   }
 }

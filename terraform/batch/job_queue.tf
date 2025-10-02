@@ -24,7 +24,7 @@ resource "aws_batch_job_queue" "gpu_queue" {
   # v5.x provider syntax for compute environment ordering
   compute_environment_order {
     order               = 1
-    compute_environment = aws_batch_compute_environment.gpu_env_v2.arn           #     gpu_env.arn for previous one
+    compute_environment = aws_batch_compute_environment.gpu_env_v2.arn #     gpu_env.arn for previous one
   }
 
   tags = {

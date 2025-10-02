@@ -69,7 +69,7 @@ resource "aws_iam_role_policy_attachment" "basic" {
 # ─────────────────────────────────────────────
 data "aws_iam_policy_document" "s3_access" {
   statement {
-    sid     = "ReadManifest"
+    sid = "ReadManifest"
     actions = [
       "s3:GetObject",
       "s3:ListBucket"
@@ -81,7 +81,7 @@ data "aws_iam_policy_document" "s3_access" {
   }
 
   statement {
-    sid     = "ReadChunks"
+    sid = "ReadChunks"
     actions = [
       "s3:GetObject",
       "s3:ListBucket",
@@ -94,7 +94,7 @@ data "aws_iam_policy_document" "s3_access" {
   }
 
   statement {
-    sid     = "WriteFinals"
+    sid = "WriteFinals"
     actions = [
       "s3:PutObject",
       "s3:AbortMultipartUpload",
@@ -177,10 +177,10 @@ resource "aws_iam_role_policy_attachment" "sns_attach" {
 # Lambda Function Definition
 # ─────────────────────────────────────────────
 resource "aws_lambda_function" "openai_stitcher" {
-  function_name    = "openai-whisper-stitcher"
-  role             = aws_iam_role.openai_stitcher_role.arn
-  runtime          = "python3.11"
-  handler          = "handler.handler"
+  function_name = "openai-whisper-stitcher"
+  role          = aws_iam_role.openai_stitcher_role.arn
+  runtime       = "python3.11"
+  handler       = "handler.handler"
 
   filename         = local.function_zip_abs
   source_code_hash = filebase64sha256(local.function_zip_abs)
@@ -212,9 +212,9 @@ resource "aws_lambda_function_event_invoke_config" "stitcher_async" {
 # Step Functions Permission (optional)
 # ─────────────────────────────────────────────
 resource "aws_lambda_permission" "allow_sfn" {
-  count        = var.state_machine_arn == "" ? 0 : 1
-  statement_id = "AllowSFNInvoke"
-  action       = "lambda:InvokeFunction"
+  count         = var.state_machine_arn == "" ? 0 : 1
+  statement_id  = "AllowSFNInvoke"
+  action        = "lambda:InvokeFunction"
   function_name = aws_lambda_function.openai_stitcher.function_name
   principal     = "states.amazonaws.com"
   source_arn    = var.state_machine_arn

@@ -27,11 +27,19 @@ This project showcases expertise in **distributed systems, applied machine learn
 
 ## 🎯 Problem Statement  
 
-Transcribing **hours of multilingual, long-form audio** quickly, reliably, and at low cost:  
+Transcribing **hours of multilingual, long-form audio** requires balancing **speed, cost, and accuracy**.  
 
-- **Target throughput:** 10 hours of audio in ≤20 minutes wall-clock  
-- **Accuracy:** OpenAI Whisper Large-v3 via Faster-Whisper/CTranslate2 (`compute_type=int8_float16`)  
-- **Scalability:** Designed for research labs, media houses, and enterprise automation.  
+This architecture is designed for **flexibility**:  
+- **Parallelism:** Scale out to dozens of GPU workers to process hours of content in minutes.  
+- **Cost Efficiency:** Scale down for lower throughput when budget is the priority.  
+- **Configurable trade-offs:** Your choice of instance types, job concurrency, and Whisper model size determines the balance between speed and cost.  
+
+Rather than being locked into a fixed throughput target, the system gives users the **levers to tune performance** — whether that means maximum throughput for a media pipeline, or cost-sensitive batch jobs for research.  
+
+**Example:**  
+- Running on **6× g5.xlarge GPUs in parallel** → ~10 hours of audio transcribed in ~20 minutes (higher cost, maximum speed).  
+- Running on **1× g5.xlarge GPU** → the same workload completes overnight (lower cost, slower turnaround).  
+ 
 
 ---
 
@@ -55,15 +63,20 @@ Transcribing **hours of multilingual, long-form audio** quickly, reliably, and a
 
 ---
 
-## 📈 Performance & Cost (TBC)  
+## 📈 Performance & Cost  
 
-- **Throughput:** ~30× real-time transcription on g5.xlarge (A10G) GPUs  
-- **Example SLA:**  
-  - 10h audio → ~20 minutes wall-clock (N≈16 GPUs)  
-- **Estimated Cost:**  
-  - GPU compute: ~$12–15 per 10h transcription  
-  - Supporting services (S3, Lambda, Step Functions): ~$1–2  
-  - **Total:** ~`$15` for 10h audio (to be confirmed with final benchmark)  
+This system is built to be **configurable**, letting you choose between **maximum throughput** or **cost savings** depending on your workload.  
+
+- **Parallelism:** Run jobs across multiple GPUs for faster turnaround, or restrict concurrency for lower cost.  
+- **Performance Example:**  
+  - ~30× real-time transcription on `g5.xlarge` (A10G) GPUs when running at high concurrency.  
+  - 10h audio → ~20 minutes wall-clock with ~16 GPUs in parallel.  
+- **Cost Example:**  
+  - High-throughput mode: ~$12–15 in GPU compute + ~$1–2 in supporting AWS services (S3, Lambda, Step Functions).  
+  - Cost-sensitive mode: run on fewer GPUs for longer wall-clock times but significantly reduced spend.  
+
+⚖️ **Trade-off:** You control the balance between **speed** and **cost** by tuning instance types, job concurrency, and model configuration.  
+
 
 ---
 
@@ -96,7 +109,10 @@ Build the dev container:
 docker build -t nimbus-tools ./docker
 ```
 
-Deploy infrastructure with Terraform on individual modules(check terraform/README.md for details):  
+## 🚀 Deployment  
+
+Deploy infrastructure with Terraform using the modular structure provided.  
+See [terraform/README.md](./terraform/README.md) for step-by-step details on provisioning individual components.
 
 ```bash
 cd terraform/...

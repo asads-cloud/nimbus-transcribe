@@ -49,10 +49,18 @@ resource "aws_iam_role" "sf_role" {
 data "aws_iam_policy_document" "sf_policy" {
   # Batch job submission & description
   statement {
-    sid      = "BatchSubmitDescribe"
-    effect   = "Allow"
-    actions  = ["batch:SubmitJob", "batch:DescribeJobs"]
+    sid       = "BatchSubmitDescribe"
+    effect    = "Allow"
+    actions   = ["batch:SubmitJob", "batch:DescribeJobs"]
     resources = ["*"]
+  }
+
+  # Scale the Batch compute environment up/down
+  statement {
+    sid       = "BatchUpdateComputeEnvironment"
+    effect    = "Allow"
+    actions   = ["batch:UpdateComputeEnvironment"]
+    resources = [var.compute_environment_arn]
   }
 
   # Allow Distributed Map to start a Map Run / child executions
@@ -67,8 +75,8 @@ data "aws_iam_policy_document" "sf_policy" {
 
   # EventBridge access (needed for Step Functions .sync integration)
   statement {
-    sid     = "EventsForSync"
-    effect  = "Allow"
+    sid    = "EventsForSync"
+    effect = "Allow"
     actions = [
       "events:PutTargets",
       "events:PutRule",
@@ -81,16 +89,16 @@ data "aws_iam_policy_document" "sf_policy" {
 
   # Lambda invoke (restricts to ARNs if provided, otherwise allows all)
   statement {
-    sid      = "InvokeLambda"
-    effect   = "Allow"
-    actions  = ["lambda:InvokeFunction", "lambda:InvokeAsync"]
+    sid       = "InvokeLambda"
+    effect    = "Allow"
+    actions   = ["lambda:InvokeFunction", "lambda:InvokeAsync"]
     resources = length(var.lambda_function_arns) > 0 ? var.lambda_function_arns : ["*"]
   }
 
   # S3 read: ingest bucket
   statement {
-    sid     = "S3ReadIngest"
-    effect  = "Allow"
+    sid    = "S3ReadIngest"
+    effect = "Allow"
     actions = [
       "s3:GetObject",
       "s3:GetObjectAttributes",
@@ -105,8 +113,8 @@ data "aws_iam_policy_document" "sf_policy" {
 
   # S3 read: results bucket
   statement {
-    sid     = "S3ReadResults"
-    effect  = "Allow"
+    sid    = "S3ReadResults"
+    effect = "Allow"
     actions = [
       "s3:GetObject",
       "s3:GetObjectAttributes",
@@ -121,8 +129,8 @@ data "aws_iam_policy_document" "sf_policy" {
 
   # CloudWatch Logs vended delivery permissions
   statement {
-    sid     = "LogsVendedPermissions"
-    effect  = "Allow"
+    sid    = "LogsVendedPermissions"
+    effect = "Allow"
     actions = [
       "logs:CreateLogDelivery",
       "logs:GetLogDelivery",

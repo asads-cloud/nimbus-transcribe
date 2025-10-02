@@ -15,14 +15,15 @@
 # Render the ASL JSON definition from template with provided variables.
 locals {
   asl_definition = templatefile("${path.module}/state_machine.asl.json.tftpl", {
-    batch_job_queue_arn      = var.batch_job_queue_arn
-    batch_job_definition_arn = var.batch_job_definition_arn
-    map_max_concurrency      = var.map_max_concurrency
+    batch_job_queue_arn       = var.batch_job_queue_arn
+    batch_job_definition_arn  = var.batch_job_definition_arn
+    map_max_concurrency       = var.map_max_concurrency
     batch_override_vcpus      = var.batch_override_vcpus
     batch_override_memory_mib = var.batch_override_memory_mib
     stitcher_lambda_arn       = var.openai_stitcher_lambda_arn
     ingest_bucket_name        = var.ingest_bucket_name
     results_bucket_name       = var.results_bucket_name
+    compute_env_name          = var.compute_environment_name
   })
 }
 
