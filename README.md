@@ -10,7 +10,7 @@ This project showcases expertise in **distributed systems, applied machine learn
 
 ### 🎥 Demo Video
 
-[![Watch the video](https://img.youtube.com/vi/wtgcypmLKQU/maxresdefault.jpg)](https://youtu.be/dQw4w9WgXcQ)
+[![Watch the video](https://img.youtube.com/vi/wtgcypmLKQU/maxresdefault.jpg)](https://youtu.be/wtgcypmLKQU)
 
 
 ---
