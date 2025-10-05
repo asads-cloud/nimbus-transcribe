@@ -43,7 +43,7 @@ Rather than being locked into a fixed throughput target, the system gives users 
 
 ---
 
-## 🏗️ Architecture Overview  
+## 🏗️ Architecture Overview  + YT Run Through: https://www.youtube.com/watch?v=wtgcypmLKQU
 
 ![Architecture Diagram](docs/architecture-diagram.png)  
 
