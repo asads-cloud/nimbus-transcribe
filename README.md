@@ -8,6 +8,13 @@ This project showcases expertise in **distributed systems, applied machine learn
 
 ---
 
+### 🎥 Demo Video
+
+[![Watch the video](https://img.youtube.com/vi/wtgcypmLKQU/maxresdefault.jpg)](https://youtu.be/dQw4w9WgXcQ)
+
+
+---
+
 ## ✨ Highlights  
 
 - **⚡ Scalable Audio Processing**  
@@ -43,7 +50,7 @@ Rather than being locked into a fixed throughput target, the system gives users 
 
 ---
 
-## 🏗️ Architecture Overview  + YT Run Through: https://www.youtube.com/watch?v=wtgcypmLKQU
+## 🏗️ Architecture Overview
 
 ![Architecture Diagram](docs/architecture-diagram.png)  
 
