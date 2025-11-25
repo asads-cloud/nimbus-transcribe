@@ -1,148 +1,152 @@
-# Nimbus Transcribe  
+# Nimbus Transcribe
 
-**Nimbus Transcribe** is a **cloud-native transcription platform** engineered to transform long-form audio into accurate, structured text at scale.  
+GPU-accelerated, serverless AWS pipeline for high-throughput
+transcription.
 
-Built entirely on **AWS serverless and GPU-powered infrastructure**, it demonstrates how to deliver **production-ready, massively parallel pipelines** for data-heavy media workflows.  
+Nimbus Transcribe is a cloud-native, distributed transcription platform
+that processes long-form, multilingual audio using Lambda, S3, ECR (**OpenAI Whisper**), Step
+Functions (Distributed Map), AWS Batch (GPU), and Terraform.
 
-This project showcases expertise in **distributed systems, applied machine learning, and infrastructure as code** — designed and implemented end-to-end by *Asad Rana (BSc Mathematics, University of Manchester)*.  
+It demonstrates real-world platform engineering, distributed compute,
+cost-aware design, and IaC-driven automation on AWS.
 
----
+## 🎯 Why This Project Matters
 
-### 🎥 Demo Video
+This system shows I can:
+
+-   Design production-aligned cloud architectures using AWS serverless +
+    containerised GPU workloads
+-   Build massively parallel pipelines using Step Functions Distributed
+    Map
+-   Operate GPU Batch compute with Dockerised Whisper
+-   Apply Terraform-first IaC across accounts/regions
+-   Build CI/CD pipelines for packaging, deployment, and automation
+-   Balance throughput vs cost using real architectural trade-offs
+
+> **Note:** The Terraform structure is currently undergoing a refactor
+> to align with improved module patterns and environment separation i've been learning.
+
+## 🎥 Demo Video
 
 [![Watch the video](https://img.youtube.com/vi/wtgcypmLKQU/maxresdefault.jpg)](https://youtu.be/wtgcypmLKQU)
 
+## ✨ Highlights
 
----
+###  Parallel Audio Processing
 
-## ✨ Highlights  
+Modular Lambda functions split long recordings into manageable segments,
+prepare metadata, and stitch results.
 
-- **⚡ Scalable Audio Processing**  
-  - Prepare, stitch, and transform audio using modular **AWS Lambda functions**.  
-- **☁️ Cloud-Native Data Lake**  
-  - **S3 ingestion and results buckets** ensure reliable, cost-efficient storage.  
-- **🔄 Distributed Orchestration**  
-  - **AWS Step Functions (Distributed Map)** orchestrates thousands of parallel jobs with built-in retries and error handling.  
-- **🖥️ GPU Acceleration**  
-  - **AWS Batch with Dockerised Whisper** models delivers ≈30× real-time transcription (TBC).  
-- **📦 Infrastructure as Code**  
-  - Fully reproducible deployments with **Terraform** across regions and accounts.  
-- **🤖 CI/CD Automation**  
-  - **GitHub Actions** for testing, packaging, and seamless deployment.  
+###  Distributed Orchestration
 
----
+AWS Step Functions Distributed Map processes hundreds-thousands of
+segments in parallel with retries, timeouts, and DLQs.
 
-## 🎯 Problem Statement  
+###  GPU Acceleration
 
-Transcribing **hours of multilingual, long-form audio** requires balancing **speed, cost, and accuracy**.  
+Dockerised Whisper runs on AWS Batch (g5.xlarge) GPU compute for ≈30×
+real-time transcription at scale.
 
-This architecture is designed for **flexibility**:  
-- **Parallelism:** Scale out to dozens of GPU workers to process hours of content in minutes.  
-- **Cost Efficiency:** Scale down for lower throughput when budget is the priority.  
-- **Configurable trade-offs:** Your choice of instance types, job concurrency, and Whisper model size determines the balance between speed and cost.  
+###  Serverless Data Flow
 
-Rather than being locked into a fixed throughput target, the system gives users the **levers to tune performance** — whether that means maximum throughput for a media pipeline, or cost-sensitive batch jobs for research.  
+S3 ingestion → Lambda prepare → Distributed Map → GPU Batch → Lambda
+stitch → S3 results.
 
-**Example:**  
-- Running on **6× g5.xlarge GPUs in parallel** → ~10 hours of audio transcribed in ~20 minutes (higher cost, maximum speed).  
-- Running on **1× g5.xlarge GPU** → the same workload completes overnight (lower cost, slower turnaround).  
- 
+###  Terraform-first Deployment
 
----
+Reproducible infrastructure with Terraform: buckets, Lambdas, Batch
+compute, IAM, state machine, logging.
 
-## 🏗️ Architecture Overview
+###  CI/CD
 
-![Architecture Diagram](docs/architecture-diagram.png)  
+GitHub Actions for automated image builds, packaging, and deploy
+workflows.
 
-**Data Flow:**  
-1. **S3 (Ingest)** →  
-2. **Lambda (Prepare):** e.g. configuration: split into 10-minute chunks (+1s overlap) →  
-3. **Step Functions (Distributed Map):** orchestrate jobs as many jobs needed →  
-4. **AWS Batch (GPU Workers):** run Whisper via ECR →  
-5. **Lambda (Stitcher):** merge JSON/TXT/SRT/VTT →  
-6. **S3 (Results)**  
+## 🧠 Problem my System Solves
 
-**Core Components:**  
-- **Buckets:** `nimbus-trasncribe-ingest-<acct>-<region>`, `nimbus-transcribe-results-<acct>-<region>`  
-- **State Machine:** `oepnai-whisper-transcribe-map` (configurable concurrency)  
-- **Batch Job:** `openai-whisper-transcribe-job` (`openai-whisper-faster:latest`)  
-- **Lambdas:** Prepare, Stitcher  
+Long-form audio transcription at scale has three competing constraints:
 
----
+-   **Speed** (parallel GPU throughput)
+-   **Cost** (number of GPU workers & instance types)
+-   **Accuracy** (Whisper model size/configuration)
 
-## 📈 Performance & Cost  
+Nimbus Transcribe exposes these controls explicitly so users can tune:
 
-This system is built to be **configurable**, letting you choose between **maximum throughput** or **cost savings** depending on your workload.  
+-   number of GPUs
+-   instance type
+-   concurrency
+-   Whisper model size
 
-- **Parallelism:** Run jobs across multiple GPUs for faster turnaround, or restrict concurrency for lower cost.  
-- **Performance Example:**  
-  - ~30× real-time transcription on `g5.xlarge` (A10G) GPUs when running at high concurrency.  
-  - 10h audio → ~20 minutes wall-clock with ~16 GPUs in parallel.  
-- **Cost Example:**  
-  - High-throughput mode: ~$12–15 in GPU compute + ~$1–2 in supporting AWS services (S3, Lambda, Step Functions).  
-  - Cost-sensitive mode: run on fewer GPUs for longer wall-clock times but significantly reduced spend.  
+**Examples:**
 
-⚖️ **Trade-off:** You control the balance between **speed** and **cost** by tuning instance types, job concurrency, and model configuration.  
+**High-throughput mode:**\
+\~10 hours of audio in \~20 minutes using 6-16 GPU workers
 
+**Cost-sensitive mode:**\
+1 GPU → slower, ultra-low-cost processing
 
----
+## 🏗 Architecture Overview
 
-## 📂 Repository Structure  
+### Flow
 
-```
-docker/       # Container images for GPU-powered Batch jobs
-lambdas/      # Lambda functions (prepare, stitch, orchestrate)
-terraform/    # IaC: state, modules, environments
-scripts/      # Helper PowerShell utilities
-.github/      # CI/CD workflows and automation
-docs/         # Architecture diagrams and notes
-artifacts/    # video + output run throughs
-```  
+-   S3 Ingest
+-   Lambda Prepare → chunking, config
+-   Step Functions Distributed Map → parallel job fan-out
+-   AWS Batch (GPU) → Whisper transcription
+-   Lambda Stitch → merge transcripts
+-   S3 Results
 
----
+### Core Components
 
-## 🚀 Quick Start  
+-   Lambdas: prepare, stitch
+-   Batch job: Dockerised Whisper
+-   S3 buckets: ingest + results
+-   Step Functions map state
+-   ECR: Whisper GPU image
+-   Terraform modules (refactor in progress)
 
-Clone the repository:  
+## 📈 Performance & Cost
 
-```bash
+### Performance
+
+-   \~30× real-time transcription on g5.xlarge (A10G)
+-   Highly parallel fan-out through Distributed Map
+-   Designed for predictable scaling
+
+### Cost
+
+-   **High-throughput:** \~\$12-\$17 per 10h workload
+-   **Cost-saving:** run 1-2 GPUs for lower spend
+-   Pay-only-for-what-you-use model (serverless control plane)
+
+## 📂 Repository Structure
+
+    docker/       # GPU Batch job image (Whisper)
+    lambdas/      # prepare, stitch functions
+    terraform/    # IaC (refactor in progress)
+    scripts/      # helper scripts (PowerShell)
+    .github/      # CI/CD workflows
+    docs/         # diagrams + notes
+    artifacts/    # demo outputs, runs, videos
+
+## 🚀 Quick Start
+
+> Deploy infrastructure with Terraform using the modular structure provided.  
+> See [terraform/README.md](./terraform/README.md) for step-by-step details on provisioning individual components.
+
+``` bash
 git clone https://github.com/asads-cloud/nimbus-transcribe.git
 cd nimbus-transcribe
-```
 
-Build the dev container:  
-
-```bash
+# Build tools container
 docker build -t nimbus-tools ./docker
-```
 
-## 🚀 Deployment  
-
-Deploy infrastructure with Terraform using the modular structure provided.  
-See [terraform/README.md](./terraform/README.md) for step-by-step details on provisioning individual components.
-
-```bash
-cd terraform/...
+# Deploy infra
 terraform init
 terraform apply
 ```
 
-Package & push the GPU worker image:  
+## 👤 Author
 
-```powershell
-# docker build / tag / push commands here
-```
-
-Update Lambda functions:  
-
-```powershell
-# zip prepare & stitcher, update Lambda functions
-```
-
----
-
-## 👨‍💻 Author  
-
-Designed and built by **Asad Rana**  
-- 🎓 BSc Mathematics (Specialisation: Statistics), University of Manchester  
-- 🌐 Focus: Cloud architecture, distributed systems, and applied AI  
+Designed and built by **Asad Rana**\
+Cloud & Platform Engineer | AWS, Terraform, GitOps, CI/CD
